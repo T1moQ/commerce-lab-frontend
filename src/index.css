@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@config "../tailwind.config.js";
+
 @layer base {
 	:root {
 		--background: 0 0% 100%;
@@ -54,4 +56,20 @@
 		--chart-4: 280 65% 60%;
 		--chart-5: 340 75% 55%;
 	}
+}
+
+html {
+	@apply scroll-smooth min-h-svh;
+}
+
+body {
+	@apply min-h-svh bg-background text-foreground;
+}
+
+#root {
+	@apply flex flex-col min-h-svh;
+}
+
+main {
+	@apply grow bg-background text-foreground;
 }
