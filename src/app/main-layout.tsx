@@ -1,3 +1,5 @@
+import { Footer } from '@/widgets/footer'
+import { Header } from '@/widgets/header'
 import { useEffect, type FC } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
