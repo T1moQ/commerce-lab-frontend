@@ -1,7 +1,7 @@
 import { useProducts } from '@/entities/products/api/queries'
 import type { FC } from 'react'
 
-export const PlaygroundPage: FC = () => {
+export const ProductsPage: FC = () => {
   const { data, isLoading, error } = useProducts()
 
   if (isLoading) return <div>Loading...</div>
