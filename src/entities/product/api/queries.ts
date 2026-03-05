@@ -17,7 +17,7 @@ export function useProducts() {
   })
 }
 
-export function useProduct(slug: string) {
+export function useProductBySlug(slug: string) {
   const queryClient = useQueryClient()
 
   return useQuery({
