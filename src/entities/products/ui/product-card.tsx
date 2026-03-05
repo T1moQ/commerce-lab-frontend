@@ -11,9 +11,10 @@ import type { FC } from 'react'
 type ProductCardProps = {
   title: string
   desc: string
+  onClick?: () => void
 }
 
-export const ProductCard: FC<ProductCardProps> = ({ title, desc }) => {
+export const ProductCard: FC<ProductCardProps> = ({ title, desc, onClick }) => {
   return (
     <Card className="relative mx-auto w-full max-w-sm pt-0">
       <CardHeader>
@@ -21,7 +22,7 @@ export const ProductCard: FC<ProductCardProps> = ({ title, desc }) => {
         <CardDescription>{desc}</CardDescription>
       </CardHeader>
       <CardFooter>
-        <Button>View detail</Button>
+        <Button onClick={onClick}>View detail</Button>
       </CardFooter>
     </Card>
   )
