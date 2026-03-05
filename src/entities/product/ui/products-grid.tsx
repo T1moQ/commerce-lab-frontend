@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { ProductCard } from './product-card'
-import type { Product } from '../model/types'
+import type { Product } from '../../product/model/types'
 import { useNavigate } from 'react-router'
 
 type ProductsGridProps = {

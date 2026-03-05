@@ -1,19 +1,21 @@
-import { productKeys } from '@/entities/model/query-keys'
-import type { Product } from '@/entities/products/model/types'
-import { getSdk, type GetProductQuery } from '@/shared/api/gql/generated'
+import { productKeys } from '@/entities/product/model/query-keys'
+import type { Product } from '@/entities/product/model/types'
+import { getSdk } from '@/shared/api/gql/generated'
 import { graphqlClient } from '@/shared/api/graphql-client'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { mapFromDetail, mapProduct } from '../model/mappers'
 
 const sdk = getSdk(graphqlClient)
 
-type ProductGqlFromDetail = NonNullable<GetProductQuery['product']>
-
-const mapFromDetail = (p: ProductGqlFromDetail): Product => ({
-  id: p.id,
-  title: p.title,
-  slug: p.slug,
-  desc: p.description ?? ''
-})
+export function useProducts() {
+  return useQuery({
+    queryKey: productKeys.list(),
+    queryFn: async () => {
+      const res = await sdk.GetProducts()
+      return res.products.items.map(mapProduct)
+    }
+  })
+}
 
 export function useProduct(slug: string) {
   const queryClient = useQueryClient()

@@ -1,5 +1,5 @@
-import { useProducts } from '@/entities/products/api/queries'
-import { ProductsGrid } from '@/entities/products/ui/products-grid'
+import { useProducts } from '@/entities/product/api/queries'
+import { ProductsGrid } from '@/entities/product/ui/products-grid'
 import type { FC } from 'react'
 
 export const ProductsPage: FC = () => {
