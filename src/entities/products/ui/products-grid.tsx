@@ -17,7 +17,7 @@ export const ProductsGrid: FC<ProductsGridProps> = ({ products }) => {
           key={p.id}
           title={p.title}
           desc={p.desc}
-          onClick={() => navigate(`/products/:${p.slug}`)}
+          onClick={() => navigate(`/products/${p.slug}`)}
         />
       ))}
     </div>

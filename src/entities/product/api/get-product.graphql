@@ -1,0 +1,8 @@
+query GetProduct($slug: String!) {
+  product(slug: $slug) {
+    title
+    description
+    id
+    slug
+  }
+}
