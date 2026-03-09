@@ -91,6 +91,8 @@ export type ProductConnection = {
 
 export type ProductFilterInput = {
   categorySlug?: InputMaybe<Scalars['String']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -118,10 +120,12 @@ export type GetProductQueryVariables = Exact<{
 
 export type GetProductQuery = { __typename?: 'Query', product?: { __typename?: 'Product', title: string, description?: string | null, id: string, slug: string } | null };
 
-export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetProductsQueryVariables = Exact<{
+  filter?: InputMaybe<ProductFilterInput>;
+}>;
 
 
-export type GetProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductConnection', items: Array<{ __typename?: 'Product', id: string, title: string, slug: string, description?: string | null }> } };
+export type GetProductsQuery = { __typename?: 'Query', products: { __typename?: 'ProductConnection', total: number, items: Array<{ __typename?: 'Product', id: string, title: string, slug: string, description?: string | null }> } };
 
 
 export const GetProductDocument = gql`
@@ -135,14 +139,15 @@ export const GetProductDocument = gql`
 }
     `;
 export const GetProductsDocument = gql`
-    query GetProducts {
-  products {
+    query GetProducts($filter: ProductFilterInput) {
+  products(filter: $filter) {
     items {
       id
       title
       slug
       description
     }
+    total
   }
 }
     `;

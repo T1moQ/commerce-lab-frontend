@@ -2,18 +2,35 @@ import { productKeys } from '@/entities/product/model/query-keys'
 import type { Product } from '@/entities/product/model/types'
 import { getSdk } from '@/shared/api/gql/generated'
 import { graphqlClient } from '@/shared/api/graphql-client'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
 import { mapFromDetail, mapProduct } from '../model/mappers'
 
 const sdk = getSdk(graphqlClient)
 
-export function useProducts() {
+type UseProductsParams = {
+  page: number
+  perPage: number
+}
+
+export function useProducts({ page, perPage }: UseProductsParams) {
+  const limit = perPage
+  const offset = (page - 1) * perPage
+
   return useQuery({
-    queryKey: productKeys.list(),
+    queryKey: productKeys.list({ page, perPage }),
     queryFn: async () => {
-      const res = await sdk.GetProducts()
-      return res.products.items.map(mapProduct)
-    }
+      const res = await sdk.GetProducts({
+        filter: {
+          limit,
+          offset
+        }
+      })
+      return {
+        items: res.products.items.map(mapProduct),
+        total: res.products.total
+      }
+    },
+    placeholderData: keepPreviousData
   })
 }
 

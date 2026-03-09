@@ -1,10 +1,11 @@
-query GetProducts {
-  products {
+query GetProducts($filter: ProductFilterInput) {
+  products(filter: $filter) {
     items {
       id
       title
       slug
       description
     }
+    total
   }
 }
