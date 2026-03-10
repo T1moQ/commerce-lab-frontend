@@ -1,7 +1,8 @@
+import { Button } from '@/components/ui/button'
 import { useProducts } from '@/entities/product/api/queries'
 import { ProductsGrid } from '@/entities/product/ui/products-grid'
 import type { FC } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const PER_PAGE = 6
 
@@ -16,6 +17,8 @@ export const ProductsPage: FC = () => {
   const products = data?.items ?? []
   const total = data?.total ?? 0
   const totalPages = Math.ceil(total / PER_PAGE)
+
+  const navigate = useNavigate()
 
   const handlePrev = () => {
     if (page <= 1) return
@@ -38,7 +41,10 @@ export const ProductsPage: FC = () => {
 
   return (
     <main className="flex flex-col justify-center items-center p-8">
-      <h1 className="mb-6 text-2xl font-bold">Products page</h1>
+      <div className="flex justify-between  w-full">
+        <h1 className="mb-6 text-2xl font-bold">Products page</h1>
+        <Button onClick={() => navigate('/products/create')}>Create product</Button>
+      </div>
       <ProductsGrid products={products} />
       <div className="flex items-center mt-8 gap-2">
         <button
