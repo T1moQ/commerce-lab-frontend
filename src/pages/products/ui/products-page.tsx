@@ -41,7 +41,7 @@ export const ProductsPage: FC = () => {
 
   return (
     <main className="flex flex-col justify-center items-center p-8">
-      <div className="flex justify-between  w-full">
+      <div className="flex justify-between w-full">
         <h1 className="mb-6 text-2xl font-bold">Products page</h1>
         <Button onClick={() => navigate('/products/create')}>Create product</Button>
       </div>
