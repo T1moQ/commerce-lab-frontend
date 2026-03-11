@@ -4,3 +4,9 @@ export type Product = {
   slug?: string
   desc: string
 }
+
+export type FormValues = {
+  title: string
+  slug: string
+  description: string
+}
