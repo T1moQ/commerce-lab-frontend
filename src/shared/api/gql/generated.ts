@@ -54,11 +54,17 @@ export type HomePage = {
 export type Mutation = {
   __typename?: 'Mutation';
   createProduct: Product;
+  deleteProduct: Product;
 };
 
 
 export type MutationCreateProductArgs = {
   input: CreateProductInput;
+};
+
+
+export type MutationDeleteProductArgs = {
+  id: Scalars['String']['input'];
 };
 
 export type Price = {
@@ -69,14 +75,12 @@ export type Price = {
 
 export type Product = {
   __typename?: 'Product';
-  category: Category;
+  category?: Maybe<Category>;
   createdAt: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
-  images: Array<Scalars['String']['output']>;
+  images?: Maybe<Array<Scalars['String']['output']>>;
   price: Price;
-  rating?: Maybe<Scalars['Float']['output']>;
-  reviewCount?: Maybe<Scalars['Int']['output']>;
   slug: Scalars['String']['output'];
   title: Scalars['String']['output'];
 };
@@ -118,6 +122,13 @@ export type CreateProductMutationVariables = Exact<{
 
 export type CreateProductMutation = { __typename?: 'Mutation', createProduct: { __typename?: 'Product', id: string, title: string, slug: string, description?: string | null } };
 
+export type DeleteProductMutationVariables = Exact<{
+  id: Scalars['String']['input'];
+}>;
+
+
+export type DeleteProductMutation = { __typename?: 'Mutation', deleteProduct: { __typename?: 'Product', id: string, title: string, slug: string } };
+
 export type GetProductQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
@@ -140,6 +151,15 @@ export const CreateProductDocument = gql`
     title
     slug
     description
+  }
+}
+    `;
+export const DeleteProductDocument = gql`
+    mutation DeleteProduct($id: String!) {
+  deleteProduct(id: $id) {
+    id
+    title
+    slug
   }
 }
     `;
@@ -176,6 +196,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     CreateProduct(variables: CreateProductMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreateProductMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateProductMutation>({ document: CreateProductDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CreateProduct', 'mutation', variables);
+    },
+    DeleteProduct(variables: DeleteProductMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<DeleteProductMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteProductMutation>({ document: DeleteProductDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'DeleteProduct', 'mutation', variables);
     },
     GetProduct(variables: GetProductQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetProductQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetProductQuery>({ document: GetProductDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetProduct', 'query', variables);

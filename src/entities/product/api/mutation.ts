@@ -12,3 +12,16 @@ export function useCreateProduct() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: productKeys.list() })
   })
 }
+
+export function useDeleteProduct() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      return sdk.DeleteProduct({ id })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: productKeys.lists() })
+    }
+  })
+}

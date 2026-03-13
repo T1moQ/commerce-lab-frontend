@@ -1,14 +1,21 @@
 import type { FC } from 'react'
 import { ProductCard } from './product-card'
 import type { Product } from '../../product/model/types'
-import { useNavigate } from 'react-router'
+import { useDeleteProduct } from '../api/mutation'
 
 type ProductsGridProps = {
   products: Product[]
 }
 
 export const ProductsGrid: FC<ProductsGridProps> = ({ products }) => {
-  const navigate = useNavigate()
+  const { mutate } = useDeleteProduct()
+
+  const handleDelete = (id: string) => {
+    const ok = window.confirm('Delete this product?')
+    if (!ok) return
+
+    mutate(id)
+  }
 
   return (
     <div className="p-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -17,7 +24,8 @@ export const ProductsGrid: FC<ProductsGridProps> = ({ products }) => {
           key={p.id}
           title={p.title}
           desc={p.desc}
-          onClick={() => navigate(`/products/${p.slug}`)}
+          slug={p.slug ?? ''}
+          onDelete={() => handleDelete(p.id)}
         />
       ))}
     </div>
