@@ -1,0 +1,8 @@
+mutation UpdateProduct($input: UpdateProductInput!, $id: String!) {
+  updateProduct(input: $input, id: $id) {
+    id
+    title
+    slug
+    description
+  }
+}
