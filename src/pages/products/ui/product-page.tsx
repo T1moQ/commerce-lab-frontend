@@ -1,11 +1,21 @@
 import { Button } from '@/components/ui/button'
+import { useDeleteProduct } from '@/entities/product/api/mutation'
 import { useProductBySlug } from '@/entities/product/api/queries'
 import type { FC } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 export const ProductPage: FC = () => {
   const slug = useParams().slug
   const { data, isLoading, error } = useProductBySlug(slug ?? '')
+  const { mutate } = useDeleteProduct()
+  const navigate = useNavigate()
+
+  const deleteHandler = () => {
+    const ok = window.confirm('Delete this product?')
+    if (!ok) return
+    mutate(data?.id ?? '')
+    navigate('/products')
+  }
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error</div>
@@ -19,6 +29,9 @@ export const ProductPage: FC = () => {
       <h2>Product Detail Page</h2>
       <h3>{data.title}</h3>
       <p>{data.desc}</p>
+      <Button className="mt-8 bg-red-900" onClick={deleteHandler}>
+        Delete
+      </Button>
     </main>
   )
 }
