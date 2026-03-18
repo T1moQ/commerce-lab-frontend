@@ -123,7 +123,7 @@ export type QueryProductsArgs = {
 };
 
 export type UpdateProductInput = {
-  desc?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   title: Scalars['String']['input'];
 };

@@ -18,6 +18,8 @@ export const ProductsPage: FC = () => {
   const total = data?.total ?? 0
   const totalPages = Math.ceil(total / PER_PAGE)
 
+  console.log(products)
+
   const navigate = useNavigate()
 
   const handlePrev = () => {

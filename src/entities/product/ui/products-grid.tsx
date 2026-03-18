@@ -23,7 +23,7 @@ export const ProductsGrid: FC<ProductsGridProps> = ({ products }) => {
         <ProductCard
           key={p.id}
           title={p.title}
-          desc={p.desc}
+          description={p.description ?? ''}
           slug={p.slug ?? ''}
           onDelete={() => handleDelete(p.id)}
         />

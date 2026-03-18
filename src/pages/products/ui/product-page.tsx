@@ -26,12 +26,17 @@ export const ProductPage: FC = () => {
       <Link to={'/products'}>
         <Button className="absolute top-2 left-2">Back to list</Button>
       </Link>
-      <h2>Product Detail Page</h2>
+      <h2 className="text-2xl font-bold mb-8">Product Detail Page</h2>
       <h3>{data.title}</h3>
-      <p>{data.desc}</p>
-      <Button className="mt-8 bg-red-900" onClick={deleteHandler}>
-        Delete
-      </Button>
+      <p>{data.description}</p>
+      <div className="flex items-center gap-4">
+        <Button className="mt-8 bg-red-900" onClick={deleteHandler}>
+          Delete
+        </Button>
+        <Link to={`/products/${slug}/edit}`}>
+          <Button className="mt-8 bg-gray-500">Edit</Button>
+        </Link>
+      </div>
     </main>
   )
 }

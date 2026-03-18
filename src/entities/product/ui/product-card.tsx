@@ -11,18 +11,23 @@ import { Link } from 'react-router-dom'
 
 type ProductCardProps = {
   title: string
-  desc: string
+  description: string
   slug: string
   onDelete?: () => void
 }
 
-export const ProductCard: FC<ProductCardProps> = ({ title, desc, slug, onDelete }) => {
+export const ProductCard: FC<ProductCardProps> = ({
+  title,
+  description,
+  slug,
+  onDelete
+}) => {
   return (
     <Card className="relative mx-auto w-full max-w-sm pt-0">
       <Link to={`/products/${slug}`} className="flex items-start cursor-pointer">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
-          <CardDescription>{desc}</CardDescription>
+          <CardDescription>{description}</CardDescription>
         </CardHeader>
       </Link>
       <CardFooter>
