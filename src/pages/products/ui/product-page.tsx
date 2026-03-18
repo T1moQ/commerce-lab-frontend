@@ -33,7 +33,7 @@ export const ProductPage: FC = () => {
         <Button className="mt-8 bg-red-900" onClick={deleteHandler}>
           Delete
         </Button>
-        <Link to={`/products/${slug}/edit}`}>
+        <Link to={`/products/${slug}/edit`}>
           <Button className="mt-8 bg-gray-500">Edit</Button>
         </Link>
       </div>

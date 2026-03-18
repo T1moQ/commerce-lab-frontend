@@ -1,8 +1,7 @@
 import { productKeys } from '@/entities/product/model/query-keys'
-import type { Product } from '@/entities/product/model/types'
 import { getSdk } from '@/shared/api/gql/generated'
 import { graphqlClient } from '@/shared/api/graphql-client'
-import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { mapFromDetail, mapProduct } from '../model/mappers'
 
 const sdk = getSdk(graphqlClient)
@@ -35,8 +34,6 @@ export function useProducts({ page, perPage }: UseProductsParams) {
 }
 
 export function useProductBySlug(slug: string) {
-  const queryClient = useQueryClient()
-
   return useQuery({
     queryKey: productKeys.detail(slug),
     queryFn: async () => {
@@ -45,10 +42,6 @@ export function useProductBySlug(slug: string) {
       const p = res.product
       if (!p) throw new Error('Product not found')
       return mapFromDetail(p)
-    },
-    initialData: () => {
-      const list = queryClient.getQueryData<Product[]>(productKeys.list())
-      return list?.find((p) => p.slug === slug)
     },
 
     enabled: Boolean(slug)

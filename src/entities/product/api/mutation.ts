@@ -40,8 +40,15 @@ export function useUpdateProduct() {
 
   return useMutation({
     mutationFn: async ({ input, id }: UpdateProductVariables) => {
-      sdk.UpdateProduct({ id, input })
+      return sdk.UpdateProduct({ id, input })
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: productKeys.list() })
+    onSuccess: (data) => {
+      const updated = data.updateProduct
+
+      queryClient.invalidateQueries({ queryKey: productKeys.list() })
+      queryClient.invalidateQueries({
+        queryKey: productKeys.detail(updated.slug)
+      })
+    }
   })
 }

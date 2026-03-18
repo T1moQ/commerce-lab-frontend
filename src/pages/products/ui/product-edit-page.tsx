@@ -11,7 +11,7 @@ export const ProductEditPage: FC = () => {
   const navigate = useNavigate()
 
   const { data, isLoading, error } = useProductBySlug(slug ?? '')
-  const { mutate, isPending } = useUpdateProduct()
+  const updateProduct = useUpdateProduct()
 
   const [newData, setNewData] = useState({
     title: data?.title ?? '',
@@ -27,9 +27,9 @@ export const ProductEditPage: FC = () => {
     }
   }, [data])
 
-  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
-    mutate({
+    await updateProduct.mutateAsync({
       id: data?.id ?? '',
       input: {
         title: newData.title,
@@ -71,7 +71,7 @@ export const ProductEditPage: FC = () => {
             />
             <FieldDescription>Change product description</FieldDescription>
           </Field>
-          <Button type="submit" disabled={isPending}>
+          <Button type="submit" disabled={updateProduct.isPending}>
             Save
           </Button>
         </FieldGroup>
