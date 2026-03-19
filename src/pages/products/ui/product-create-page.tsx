@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { useCreateProduct } from '@/entities/product/api/mutation'
 import type { FormValues } from '@/entities/product/model/types'
 import { CreateProductForm } from '@/entities/product/ui/create-product-form'
+import { notify } from '@/shared/lib/toast'
 import type { FC } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -28,6 +29,7 @@ export const ProductCreatePage: FC = () => {
         }
       }
     )
+    notify.success('Product created')
   }
 
   return (

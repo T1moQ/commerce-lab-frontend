@@ -3,6 +3,7 @@ import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui
 import { Input } from '@/components/ui/input'
 import { useUpdateProduct } from '@/entities/product/api/mutation'
 import { useProductBySlug } from '@/entities/product/api/queries'
+import { notify } from '@/shared/lib/toast'
 import { useEffect, useState, type FC } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
@@ -37,6 +38,8 @@ export const ProductEditPage: FC = () => {
       }
     })
     navigate(`/products/${slug}`)
+
+    notify.info('Product updated')
   }
 
   if (isLoading) return <div>Loading...</div>

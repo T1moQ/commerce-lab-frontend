@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import { ProductCard } from './product-card'
 import type { Product } from '../../product/model/types'
 import { useDeleteProduct } from '../api/mutation'
+import { notify } from '@/shared/lib/toast'
 
 type ProductsGridProps = {
   products: Product[]
@@ -11,10 +12,11 @@ export const ProductsGrid: FC<ProductsGridProps> = ({ products }) => {
   const { mutate } = useDeleteProduct()
 
   const handleDelete = (id: string) => {
-    const ok = window.confirm('Delete this product?')
-    if (!ok) return
-
-    mutate(id)
+    mutate(id, {
+      onSuccess: () => {
+        notify.warning('Product deleted')
+      }
+    })
   }
 
   return (
