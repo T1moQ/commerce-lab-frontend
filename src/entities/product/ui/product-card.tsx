@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardDescription,
@@ -8,6 +7,7 @@ import {
 } from '@/components/ui/card'
 import type { FC } from 'react'
 import { Link } from 'react-router-dom'
+import { DeleteProductDialog } from './delete-product-dialog'
 
 type ProductCardProps = {
   title: string
@@ -31,7 +31,7 @@ export const ProductCard: FC<ProductCardProps> = ({
         </CardHeader>
       </Link>
       <CardFooter>
-        <Button onClick={onDelete}>Delete</Button>
+        <DeleteProductDialog onDelete={() => onDelete} />
       </CardFooter>
     </Card>
   )
