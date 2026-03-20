@@ -7,6 +7,5 @@ export type Product = {
 
 export type FormValues = {
   title: string
-  slug: string
   description: string
 }

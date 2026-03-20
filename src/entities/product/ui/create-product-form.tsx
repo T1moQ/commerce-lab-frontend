@@ -13,14 +13,12 @@ type FormProps = {
 export const CreateProductForm: FC<FormProps> = ({ submitFormToPage, isPending }) => {
   const [formValues, setFormValues] = useState<FormValues>({
     title: '',
-    slug: '',
     description: ''
   })
 
   const resetHandler = () => {
     setFormValues({
       title: '',
-      slug: '',
       description: ''
     })
   }
@@ -56,17 +54,6 @@ export const CreateProductForm: FC<FormProps> = ({ submitFormToPage, isPending }
             placeholder="Product description"
           />
           <FieldDescription>Add a description for your product</FieldDescription>
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="product-slug">Product Slug</FieldLabel>
-          <Input
-            id="product-slug"
-            value={formValues.slug}
-            onChange={(e) => setFormValues({ ...formValues, slug: e.target.value })}
-            type="text"
-            placeholder="Product slug"
-          />
-          <FieldDescription>Slug will be created automatically</FieldDescription>
         </Field>
         <Field orientation={'horizontal'}>
           <Button type="reset" variant="outline" onClick={resetHandler}>

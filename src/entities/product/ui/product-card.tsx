@@ -31,7 +31,7 @@ export const ProductCard: FC<ProductCardProps> = ({
         </CardHeader>
       </Link>
       <CardFooter>
-        <DeleteProductDialog onDelete={() => onDelete} />
+        <DeleteProductDialog onDelete={() => onDelete?.()} />
       </CardFooter>
     </Card>
   )

@@ -8,28 +8,32 @@ import { useNavigate } from 'react-router-dom'
 
 export const ProductCreatePage: FC = () => {
   const navigate = useNavigate()
-  const { mutate, isPending, error } = useCreateProduct()
+  const { mutateAsync, isPending, error } = useCreateProduct()
 
-  const handleSubmit = (values: FormValues) => {
-    const fixedSlug = values.title
+  const handleSubmit = async (values: FormValues) => {
+    const generatedSlug = values.title
       .toLowerCase()
       .trim()
       .replace(/[^\w\s-]/g, '')
       .replace(/\s+/g, '-')
 
-    mutate(
-      {
+    if (!generatedSlug) {
+      notify.error('Title is required to generate a slug')
+      return
+    }
+
+    try {
+      const response = await mutateAsync({
         title: values.title,
-        slug: values.slug,
+        slug: generatedSlug,
         description: values.description
-      },
-      {
-        onSuccess: () => {
-          navigate(`/products/${fixedSlug}`)
-        }
-      }
-    )
-    notify.success('Product created')
+      })
+
+      notify.success('Product created')
+      navigate(`/products/${response.createProduct.slug}`)
+    } catch {
+      notify.error('Failed to create product')
+    }
   }
 
   return (

@@ -18,7 +18,7 @@ export function useCreateProduct() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (input: CreateProductInput) => sdk.CreateProduct({ input }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: productKeys.list() })
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: productKeys.lists() })
   })
 }
 
@@ -45,7 +45,7 @@ export function useUpdateProduct() {
     onSuccess: (data) => {
       const updated = data.updateProduct
 
-      queryClient.invalidateQueries({ queryKey: productKeys.list() })
+      queryClient.invalidateQueries({ queryKey: productKeys.lists() })
       queryClient.invalidateQueries({
         queryKey: productKeys.detail(updated.slug)
       })

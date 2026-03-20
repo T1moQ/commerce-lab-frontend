@@ -40,7 +40,7 @@ export function useProductBySlug(slug: string) {
       const res = await sdk.GetProduct({ slug })
 
       const p = res.product
-      if (!p) throw new Error('Product not found')
+      if (!p) return null
       return mapFromDetail(p)
     },
 

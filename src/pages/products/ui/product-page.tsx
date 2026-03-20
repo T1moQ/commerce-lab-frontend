@@ -1,25 +1,34 @@
 import { Button } from '@/components/ui/button'
 import { useDeleteProduct } from '@/entities/product/api/mutation'
 import { useProductBySlug } from '@/entities/product/api/queries'
+import { notify } from '@/shared/lib/toast'
 import type { FC } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 export const ProductPage: FC = () => {
   const slug = useParams().slug
   const { data, isLoading, error } = useProductBySlug(slug ?? '')
-  const { mutate, isPending } = useDeleteProduct()
+  const { mutateAsync, isPending } = useDeleteProduct()
   const navigate = useNavigate()
 
-  const deleteHandler = () => {
+  const deleteHandler = async () => {
     const ok = window.confirm('Delete this product?')
     if (!ok) return
-    mutate(data?.id ?? '')
-    navigate('/products')
+
+    if (!data?.id) return
+
+    try {
+      await mutateAsync(data.id)
+      notify.warning('Product deleted')
+      navigate('/products')
+    } catch {
+      notify.error('Failed to delete product')
+    }
   }
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error</div>
-  if (data === undefined || data === null) return <div>Product not found</div>
+  if (!data) return <div>Product not found</div>
 
   return (
     <main className="flex flex-col justify-center items-center relative">
