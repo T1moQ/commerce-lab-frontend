@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { useProducts } from '@/entities/product/api/queries'
 import { ProductsGrid } from '@/entities/product/ui/products-grid'
+import { useDeleteProductAction } from '@/features/product/delete-product'
 import type { FC } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
@@ -18,9 +19,8 @@ export const ProductsPage: FC = () => {
   const total = data?.total ?? 0
   const totalPages = Math.ceil(total / PER_PAGE)
 
-  console.log(products)
-
   const navigate = useNavigate()
+  const { deleteProduct } = useDeleteProductAction()
 
   const handlePrev = () => {
     if (page <= 1) return
@@ -47,7 +47,12 @@ export const ProductsPage: FC = () => {
         <h1 className="mb-6 text-2xl font-bold">Products page</h1>
         <Button onClick={() => navigate('/products/create')}>Create product</Button>
       </div>
-      <ProductsGrid products={products} />
+      <ProductsGrid
+        products={products}
+        onDelete={(id) => {
+          void deleteProduct(id)
+        }}
+      />
       <div className="flex items-center mt-8 gap-2">
         <button
           onClick={handlePrev}

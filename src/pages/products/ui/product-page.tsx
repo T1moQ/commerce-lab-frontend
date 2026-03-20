@@ -1,15 +1,16 @@
 import { Button } from '@/components/ui/button'
-import { useDeleteProduct } from '@/entities/product/api/mutation'
 import { useProductBySlug } from '@/entities/product/api/queries'
-import { notify } from '@/shared/lib/toast'
+import { useDeleteProductAction } from '@/features/product/delete-product'
 import type { FC } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 export const ProductPage: FC = () => {
   const slug = useParams().slug
   const { data, isLoading, error } = useProductBySlug(slug ?? '')
-  const { mutateAsync, isPending } = useDeleteProduct()
   const navigate = useNavigate()
+  const { deleteProduct, isPending } = useDeleteProductAction({
+    onSuccess: () => navigate('/products')
+  })
 
   const deleteHandler = async () => {
     const ok = window.confirm('Delete this product?')
@@ -17,13 +18,7 @@ export const ProductPage: FC = () => {
 
     if (!data?.id) return
 
-    try {
-      await mutateAsync(data.id)
-      notify.warning('Product deleted')
-      navigate('/products')
-    } catch {
-      notify.error('Failed to delete product')
-    }
+    await deleteProduct(data.id)
   }
 
   if (isLoading) return <div>Loading...</div>
