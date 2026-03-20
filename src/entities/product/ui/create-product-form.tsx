@@ -72,7 +72,9 @@ export const CreateProductForm: FC<FormProps> = ({ submitFormToPage, isPending }
           <Button type="reset" variant="outline" onClick={resetHandler}>
             Reset
           </Button>
-          <Button type="submit">{isPending ? 'Creating...' : 'Create product'}</Button>
+          <Button type="submit" disabled={isPending}>
+            {isPending ? 'Creating...' : 'Create product'}
+          </Button>
         </Field>
       </FieldGroup>
     </form>

@@ -75,7 +75,7 @@ export const ProductEditPage: FC = () => {
             <FieldDescription>Change product description</FieldDescription>
           </Field>
           <Button type="submit" disabled={updateProduct.isPending}>
-            Save
+            {updateProduct.isPending ? 'Saving...' : 'Save changes'}
           </Button>
         </FieldGroup>
       </form>

@@ -7,7 +7,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 export const ProductPage: FC = () => {
   const slug = useParams().slug
   const { data, isLoading, error } = useProductBySlug(slug ?? '')
-  const { mutate } = useDeleteProduct()
+  const { mutate, isPending } = useDeleteProduct()
   const navigate = useNavigate()
 
   const deleteHandler = () => {
@@ -30,8 +30,8 @@ export const ProductPage: FC = () => {
       <h3>{data.title}</h3>
       <p>{data.description}</p>
       <div className="flex items-center gap-4">
-        <Button className="mt-8 bg-red-900" onClick={deleteHandler}>
-          Delete
+        <Button className="mt-8 bg-red-900" onClick={deleteHandler} disabled={isPending}>
+          {isPending ? 'Deleting...' : 'Delete'}
         </Button>
         <Link to={`/products/${slug}/edit`}>
           <Button className="mt-8 bg-gray-500">Edit</Button>
