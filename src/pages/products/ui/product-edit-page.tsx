@@ -1,22 +1,22 @@
 import { Button } from '@/components/ui/button'
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { useUpdateProduct } from '@/entities/product/api/mutation'
 import { useProductBySlug } from '@/entities/product/api/queries'
-import { notify } from '@/shared/lib/toast'
+import { useUpdateProductAction } from '@/features/product/update-product'
 import { useEffect, useState, type FC } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 export const ProductEditPage: FC = () => {
   const slug = useParams().slug
   const navigate = useNavigate()
-
   const { data, isLoading, error } = useProductBySlug(slug ?? '')
-  const updateProduct = useUpdateProduct()
-
   const [newData, setNewData] = useState({
-    title: data?.title ?? '',
-    description: data?.description ?? ''
+    title: '',
+    description: ''
+  })
+
+  const { updateProduct, isPending } = useUpdateProductAction({
+    onSuccess: (updatedSlug) => navigate(`/products/${updatedSlug}`)
   })
 
   useEffect(() => {
@@ -26,25 +26,21 @@ export const ProductEditPage: FC = () => {
         description: data.description
       })
     }
-  }, [data])
-
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    await updateProduct.mutateAsync({
-      id: data?.id ?? '',
-      input: {
-        title: newData.title,
-        description: newData.description
-      }
-    })
-    navigate(`/products/${slug}`)
-
-    notify.info('Product updated')
-  }
+  }, [data, setNewData])
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error</div>
   if (!data) return <div>Product not found</div>
+
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    await updateProduct({
+      id: data.id,
+      title: newData.title,
+      description: newData.description
+    })
+  }
 
   return (
     <main className="flex flex-col justify-center items-center relative">
@@ -65,7 +61,7 @@ export const ProductEditPage: FC = () => {
             <FieldDescription>Change product title</FieldDescription>
           </Field>
           <Field>
-            <FieldLabel htmlFor="product-title">Product Description</FieldLabel>
+            <FieldLabel htmlFor="product-desc">Product Description</FieldLabel>
             <Input
               id="product-desc"
               type="text"
@@ -74,8 +70,8 @@ export const ProductEditPage: FC = () => {
             />
             <FieldDescription>Change product description</FieldDescription>
           </Field>
-          <Button type="submit" disabled={updateProduct.isPending}>
-            {updateProduct.isPending ? 'Saving...' : 'Save changes'}
+          <Button type="submit" disabled={isPending}>
+            {isPending ? 'Saving...' : 'Save changes'}
           </Button>
         </FieldGroup>
       </form>
